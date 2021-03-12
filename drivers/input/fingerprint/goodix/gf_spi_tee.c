@@ -747,9 +747,12 @@ static long gf_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	struct gf_device *gf_dev = NULL;
 	struct gf_key gf_key;
+#ifdef CONFIG_FP_NAV_EVENT
 	gf_nav_event_t nav_event = GF_NAV_NONE;
 	uint32_t nav_input = 0;
+#endif
 	uint32_t key_input = 0;
+
 #ifdef SUPPORT_REE_SPI
 #ifdef SUPPORT_REE_OSWEGO
 	struct gf_ioc_transfer ioc;
@@ -927,7 +930,7 @@ static long gf_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 
 		break;
-
+#ifdef CONFIG_FP_NAV_EVENT
 	case GF_IOC_NAV_EVENT:
 	    gf_debug(ERR_LOG, "nav event");
 		if (copy_from_user(&nav_event, (gf_nav_event_t *)arg, sizeof(gf_nav_event_t))) {
@@ -994,7 +997,7 @@ static long gf_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		    input_sync(gf_dev->input);
 		}
 		break;
-
+#endif
 	case GF_IOC_ENTER_SLEEP_MODE:
 		gf_debug(INFO_LOG, "%s: GF_IOC_ENTER_SLEEP_MODE ======\n", __func__);
 		break;
@@ -2238,7 +2241,7 @@ static int gf_probe(struct spi_device *spi)
 	__set_bit(GF_KEY_INPUT_MENU, gf_dev->input->keybit);
 	__set_bit(GF_KEY_INPUT_BACK, gf_dev->input->keybit);
 	__set_bit(GF_KEY_INPUT_POWER, gf_dev->input->keybit);
-
+#ifdef CONFIG_FP_NAV_EVENT
 	__set_bit(GF_NAV_INPUT_UP, gf_dev->input->keybit);
 	__set_bit(GF_NAV_INPUT_DOWN, gf_dev->input->keybit);
 	__set_bit(GF_NAV_INPUT_RIGHT, gf_dev->input->keybit);
@@ -2249,7 +2252,7 @@ static int gf_probe(struct spi_device *spi)
 	__set_bit(GF_NAV_INPUT_LONG_PRESS, gf_dev->input->keybit);
 	__set_bit(GF_NAV_INPUT_HEAVY, gf_dev->input->keybit);
 	//__set_bit(GF_KEY_INPUT_KPENTER, gf_dev->input->keybit);
-
+#endif
 	gf_dev->input->name = GF_INPUT_NAME;
 	if (input_register_device(gf_dev->input)) {
 		gf_debug(ERR_LOG, "%s, Failed to register input device.\n", __func__);

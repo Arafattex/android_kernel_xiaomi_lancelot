@@ -38,7 +38,7 @@ extern u8 g_debug_level;
 
 /**********************IO Magic**********************/
 #define GF_IOC_MAGIC	'g'
-
+#ifdef CONFIG_FP_NAV_EVENT
 #define GF_NAV_INPUT_UP			KEY_UP
 #define GF_NAV_INPUT_DOWN		KEY_DOWN
 #define GF_NAV_INPUT_LEFT		KEY_LEFT
@@ -47,7 +47,7 @@ extern u8 g_debug_level;
 #define GF_NAV_INPUT_DOUBLE_CLICK	KEY_VOLUMEUP
 #define GF_NAV_INPUT_LONG_PRESS		KEY_SEARCH
 #define GF_NAV_INPUT_HEAVY		KEY_CHAT
-
+#endif
 #define GF_KEY_INPUT_HOME		KEY_SELECT
 #define GF_KEY_INPUT_MENU		KEY_MENU
 #define GF_KEY_INPUT_BACK		KEY_BACK
@@ -55,6 +55,7 @@ extern u8 g_debug_level;
 #define GF_KEY_INPUT_CAMERA		KEY_CAMERA
 #define GF_KEY_INPUT_KPENTER            KEY_KPENTER
 
+#ifdef CONFIG_FP_NAV_EVENT
 typedef enum gf_nav_event {
 	GF_NAV_NONE = 0,
 	GF_NAV_FINGER_UP,
@@ -68,7 +69,7 @@ typedef enum gf_nav_event {
 	GF_NAV_LONG_PRESS,
 	GF_NAV_DOUBLE_CLICK,
 } gf_nav_event_t;
-
+#endif
 typedef enum gf_key_event {
 	GF_KEY_NONE = 0,
 	GF_KEY_HOME,
