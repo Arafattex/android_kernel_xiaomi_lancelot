@@ -3508,8 +3508,8 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 		binder_node_unlock(node);
 		return false;
 	}
-
-	if (!thread && !pending_async)
+	//hallium changes
+	if (!thread /* && !pending_async */)
 		thread = binder_select_thread_ilocked(proc);
 
 	if (thread) {
@@ -3524,7 +3524,12 @@ static bool binder_proc_transaction(struct binder_transaction *t,
 	} else if (!pending_async) {
 		binder_enqueue_work_ilocked(&t->work, &proc->todo);
 	} else {
-		binder_enqueue_work_ilocked(&t->work, &node->async_todo);
+				// Halium: libgbinder workaround
+		/*binder_enqueue_work_ilocked(&t->work, &node->async_todo);*/
+		pr_err("%d:%d has pending async transaction, but queueing work and waking up the thread anyway (gbinder bug workaround)\n", proc->pid, thread ? thread->pid : 0);
+		pending_async = false;
+		binder_enqueue_work_ilocked(&t->work, &proc->todo);
+
 	}
 
 	if (!pending_async)
@@ -4547,7 +4552,8 @@ static int binder_thread_write(struct binder_proc *proc,
 
 				buf_node = buffer->target_node;
 				binder_node_inner_lock(buf_node);
-				BUG_ON(!buf_node->has_async_transaction);
+				// Halium: libgbinder workaround
+				/*BUG_ON(!buf_node->has_async_transaction);*/
 				BUG_ON(buf_node->proc != proc);
 				w = binder_dequeue_work_head_ilocked(
 						&buf_node->async_todo);
