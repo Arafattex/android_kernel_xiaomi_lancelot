@@ -701,10 +701,10 @@ int enter_palm_mode(struct fts_ts_data *data)
 	} else if (0x01 == mode) {
 		FTS_FUNC_ENTER();
 		FTS_INFO("Gesture Code=%d", mode);
-		input_report_key(data->input_dev, 523, 1);
+		/*input_report_key(data->input_dev, 523, 1);
 		input_sync(data->input_dev);
 		input_report_key(data->input_dev, 523, 0);
-		input_sync(data->input_dev);
+		input_sync(data->input_dev);*/
 	}
 	FTS_FUNC_EXIT();
 	return 0;

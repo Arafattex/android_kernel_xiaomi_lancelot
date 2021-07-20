@@ -696,10 +696,10 @@ int enter_palm_mode(struct fts_ts_data *data)
 	else if ((0x01 == mode) && (palm_flag == 0)) {
 		FTS_INFO("get packet palm on event.\n");
 		palm_flag = 1;
-		input_report_key(data->input_dev, 523, 1);
+		/*input_report_key(data->input_dev, 523, 1);
 		input_sync(data->input_dev);
 		input_report_key(data->input_dev, 523, 0);
-		input_sync(data->input_dev);
+		input_sync(data->input_dev);*/
 	}
 	return 0;
 }
